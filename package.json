@@ -1,0 +1,40 @@
+{
+  "name": "wp-framework",
+  "version": "1.0.0",
+  "description": "Framework for Wordpress Custom Theme Development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nelsonjeronimo/wp-framework.git"
+  },
+  "keywords": [
+    "wordpress",
+    "framework"
+  ],
+  "author": "Nelson Jerónimo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nelsonjeronimo/wp-framework/issues"
+  },
+  "homepage": "https://github.com/nelsonjeronimo/wp-framework#readme",
+  "devDependencies": {
+    "autoprefixer": "^8.0.0",
+    "browser-sync": "^2.23.6",
+    "css-mqpacker": "^6.0.2",
+    "cssnano": "^3.10.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-deporder": "^1.1.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-newer": "^1.4.0",
+    "gulp-postcss": "^7.0.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-strip-debug": "^2.0.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "postcss-assets": "^5.0.0"
+  }
+}
