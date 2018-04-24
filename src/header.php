@@ -10,4 +10,14 @@
 888  888 Y8b.     888  888 Y88b 888 Y8b.     888          888    888 888 Y8b.     
 888  888  "Y8888  "Y888888  "Y88888  "Y8888  888          888    888 888  "Y8888
 
-*/
+*/ ?>
+
+<!DOCTYPE html>
+<html <?php language_attributes(); ?> class="no-js">
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+
+<?php
+    wp_head();

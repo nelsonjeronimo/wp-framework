@@ -13,6 +13,7 @@ get_header(); ?>
 
 <h3>This is the core page (index.php):</h3>
 
+<?php the_socials('xpto'); ?>
 
 <?php while(have_posts()) : the_post(); ?>
 

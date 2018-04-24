@@ -29,12 +29,16 @@
     "gulp-concat": "^2.6.1",
     "gulp-deporder": "^1.1.0",
     "gulp-imagemin": "^4.1.0",
+    "gulp-install": "^1.1.0",
     "gulp-newer": "^1.4.0",
     "gulp-postcss": "^7.0.1",
-    "gulp-sass": "^3.1.0",
+    "gulp-sass": "^3.2.1",
     "gulp-strip-debug": "^2.0.0",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "postcss-assets": "^5.0.0"
+  },
+  "dependencies": {
+    "ordered-read-streams": "^1.0.1"
   }
 }

@@ -11,12 +11,18 @@ d88P"                   888                         d88P"  Y8P 888
 */
 ?>
 
-<footer>
-    <div class="widgtized_footer">
+        <footer>
+            <div class="widgtized_footer">
 
-    </div>
+            </div>
 
-    <div class="copyright">
-        <p> <?php echo frmw_copyright(); ?> </p>
-    </div>
-</footer>
+            <div class="copyright">
+                <p> <?php echo frmw_copyright(); ?> </p>
+            </div>
+
+        </footer>
+
+        <?php wp_footer(); ?>
+
+    </body>
+</html>

@@ -59,13 +59,32 @@ function the_socials($classes='') {
 
     $classes = "site_socials ".$classes;
     
-    $html = '<ul class="'.$classes.'">';
+    $html = '<nav class="'.$classes.'">';
     
     foreach ( $networks as $network ) {
         if ( $network['url'] !== false ){
-            $html.= '<li><a href="'.$network['url'].'" target="_blank"><i class="fa fa-'.$network['name'].'"></i></a></li>';
+            $html.= '<a href="'.$network['url'].'" class="network-link" target="_blank"><i class="fa fa-'.$network['name'].'"></i></a>';
         }
     }
-    $html.='</ul>';
+    $html.='</nav>';
+    echo $html;
+}
+
+// CONTACTS
+
+function the_contacts ($classes='') {
+    
+    $html='';
+    
+    $classes = "site_contacts ".$classes;
+    
+    $phone = get_theme_mod('phone_details');
+    $email = get_theme_mod('mail_details');
+    
+    $html = '<address class="'.$classes.'">';
+    $html.= '<span><a href="tel:'.$phone.'"><i class="fa fa-phone"></i>'.$phone.'</a></span>';
+    $html.= '<span><a href="mailto:'.$email.'"><i class="fa fa-envelope"></i>'.$email.'</a></span>';
+    $html.= '</address>';
+    
     echo $html;
 }
