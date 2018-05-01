@@ -16,8 +16,24 @@
 <html <?php language_attributes(); ?> class="no-js">
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?php wp_title(''); ?><?php if (wp_title('', false)) { echo ' :';} bloginfo('name'); ?></title>
+
+ <!-- dns prefetch -->
+ <link href="//www.google-analytics.com" rel="dns-prefetch">
+
+<!-- meta -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="profile" href="http://gmpg.org/xfn/11">
+
+<!-- icons -->
+<link href="<?php echo get_template_directory_uri(); ?>/favicon.ico" rel="shortcut icon">
+<link href="<?php echo get_template_directory_uri(); ?>/touch.png" rel="apple-touch-icon-precomposed">
 
 <?php
     wp_head();
+?>
+
+<body <?php body_class(); ?> >
+
+<?php main_navigation(); ?>

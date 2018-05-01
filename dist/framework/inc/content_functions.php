@@ -42,7 +42,35 @@ function the_brand() {
     return $output;
 }
 
-// Social Networks 
+
+// MAIN NAVIGATION
+function main_navigation($nav_ID="main_nav", $classes="") {
+    ?>
+    <nav class="navbar navbar-expand-md <?php echo $classes ?>">
+        <a class="navbar-brand" href="#"><?php echo the_brand(); ?></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#<?php echo $nav_ID; ?>" aria-controls="bs4navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span>
+        </button>
+    <?php
+        wp_nav_menu([
+            'menu'            => 'top',
+            'theme_location'  => 'top',
+            'container'       => 'div',
+            'container_id'    => $nav_ID,
+            'container_class' => 'collapse navbar-collapse',
+            'menu_id'         => false,
+            'menu_class'      => 'navbar-nav mr-auto',
+            'depth'           => 2,
+            'fallback_cb'     => 'bs4navwalker::fallback',
+            'walker'          => new bs4navwalker()
+        ]);
+    ?>
+    </nav>
+    <?php
+}
+
+
+// SOCIAL NETWORKS 
 
 function the_socials($classes='') {
 
@@ -71,7 +99,6 @@ function the_socials($classes='') {
 }
 
 // CONTACTS
-
 function the_contacts ($classes='') {
     
     $html='';

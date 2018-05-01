@@ -16,8 +16,6 @@ const
   imagemin      = require('gulp-imagemin'),
   sass          = require('gulp-sass'),
   postcss       = require('gulp-postcss'),
-  deporder      = require('gulp-deporder'),
-  concat        = require('gulp-concat'),
   stripdebug    = require('gulp-strip-debug'),
   uglify        = require('gulp-uglify')
 ;
@@ -69,14 +67,7 @@ var css = {
     imagePath       : images.build,
     precision       : 3,
     errLogToConsole : true
-  },
-  processors: [
-    require('autoprefixer')({
-      browsers: ['last 2 versions', '> 2%']
-    }),
-    require('css-mqpacker'),
-    require('cssnano')
-  ]
+  }
 };
 
 // CSS processing
@@ -91,8 +82,7 @@ gulp.task('css', ['images', 'fonts'], () => {
 // JavaScript settings
 const js = {
   src         : dir.src + 'js/**/*',
-  build       : dir.build + 'assets/js/',
-  filename    : 'scripts.js'
+  build       : dir.build + 'assets/js/'
 };
 
 // JavaScript processing
@@ -141,7 +131,7 @@ const syncOpts = {
 };
 
 // browser-sync
-gulp.task('browsersync', () => {
+gulp.task('browser_sync', () => {
   if (browsersync === false) {
     browsersync = require('browser-sync').create();
     browsersync.init(syncOpts);
@@ -149,7 +139,7 @@ gulp.task('browsersync', () => {
 });
 
 // watch for file changes
-gulp.task('watch', ['browsersync'], () => {
+gulp.task('watch', ['browser_sync'], () => {
 
 	// page changes
   	gulp.watch(php.src, ['php'], browsersync ? browsersync.reload : {});
