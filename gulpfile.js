@@ -1,165 +1,104 @@
-// Gulp.js configuration
-'use strict';
 
+var gulp = require('gulp');
+var postcss = require('gulp-postcss');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var cleanCSS = require('gulp-clean-css');
+var sourcemaps = require('gulp-sourcemaps');
+var uglify = require('gulp-uglify');
+var imagemin = require('gulp-imagemin');
+var newer = require('gulp-newer');
+var merge = require('merge-stream');
+var browserSync = require('browser-sync').create();
+
+// varibles for the paths
 const
+    dir = {
+        src :   'src/',
+        dist:   'dist/'
+    };
 
-  // source and build folders
-  dir = {
-    src         : 'src/',
-    build       : 'dist/',
-  },
+// other variables
+var projectURL  =   'project.test';
 
-  // Gulp and plugins
-  gulp          = require('gulp'),
-  gutil         = require('gulp-util'),
-  newer         = require('gulp-newer'),
-  imagemin      = require('gulp-imagemin'),
-  sass          = require('gulp-sass'),
-  postcss       = require('gulp-postcss'),
-  stripdebug    = require('gulp-strip-debug'),
-  uglify        = require('gulp-uglify')
-;
+// SASS to CSS, minified, cleaned, sourcemapped, autoprefixed
 
-// Browser-sync
-var browsersync = false;
+var sass = {
+    opts: {
+        outputStyle     : 'nested',
+        imagePath       : images.build,
+        precision       : 3,
+        errLogToConsole : true
+    }
+}
+gulp.task('sass', function() {
 
-// PHP settings
-const php = {
-  src           : dir.src + '**/*.php',
-  build         : dir.build
-};
-
-// copy PHP files
-gulp.task('php', () => {
-  return gulp.src(php.src)
-    .pipe(newer(php.build))
-    .pipe(gulp.dest(php.build));
+   return gulp.src(dir.src+'assets/scss/**/*.scss')
+            .pipe(sass(sass.opts).on('error', sass.logError))
+            .pipe(sourcemaps.init())
+            .pipe( autoprefixer())
+            .pipe(cleanCSS({compatibility: 'ie9'}))
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest(dir.dist+'assets/css'));
 });
 
-// Image settings
-const images = {
-  src         : dir.src + 'images/**/*',
-  build       : dir.build + 'assets/images/'
-};
+// JS minify
+gulp.task('js', function() {
+    return gulp.src(dir.src+'assets/js/**/*.js')
+            .pipe(uglify())
+            .pipe(gulp.dest(dir.dist+'assets/js'));
+});
 
-// Image processing
-gulp.task('images', () => {
-  return gulp.src(images.src)
-    .pipe(newer(images.build))
-    .pipe(imagemin())
-    .pipe(gulp.dest(images.build));
+// Compress Images
+gulp.task('images', function() {
+    return gulp.src(dir.src+'assets/images/**/*.*')
+            .pipe(newer(dis.dist+'assets/images/**/*'))
+            .pipe(imagemin())
+            .pipe(gulp.dest(dir.dist+'assets/images'));
 });
 
 // Fonts
-gulp.task('fonts', () => {
-	return gulp.src(dir.src + 'fonts/**/*')
-	.pipe(newer(dir.build + 'assets/fonts/'))
-	.pipe(gulp.dest(dir.build + 'assets/fonts/'));
+gulp.task('fonts', function() {
+    return gulp.src(dir.src+'assets/fonts/**/*.*')
+            .pipe(newer(dir.dist+'assets/fonts/'))
+            .pipe(gulp.dest(dir.dist+'assets/fonts'));
 });
 
-// CSS settings
-var css = {
-  src         : dir.src + 'scss/**/*.scss',
-  watch       : dir.src + 'scss/**/*',
-  build       : dir.build + 'assets/css',
-  sassOpts: {
-    outputStyle     : 'nested',
-    imagePath       : images.build,
-    precision       : 3,
-    errLogToConsole : true
-  }
-};
+// Copy files
+gulp.task('files', function() {
+    var themeroot = gulp.src(dir.src+'*.*')
+                    .pipe(gulp.dest(dir.dist));
 
-// CSS processing
-gulp.task('css', ['images', 'fonts'], () => {
-  return gulp.src(css.src)
-    .pipe(sass(css.sassOpts))
-    .pipe(gulp.dest(css.build))
-    .pipe(browsersync ? browsersync.reload({ stream: true }) : gutil.noop());
+    var themelang = gulp.src(dir.src+'languages/**/*.*')
+                    .pipe(gulp.dest(dir.dist+'languages/'));
+
+    var phpfiles = gulp.src(dir.src+'**/*.php')
+                    .pipe(gulp.dest(dir.dist));
+
+    return merge(themeroot, themelang, phpfiles);
 });
 
+// Browsersync
+gulp.task( 'browser-sync', function() {
+    browserSync.init( {
 
-// JavaScript settings
-const js = {
-  src         : dir.src + 'js/**/*',
-  build       : dir.build + 'assets/js/'
-};
+      proxy: projectURL,
+      // `true` Automatically open the browser with BrowserSync live server.
+      // `false` Stop the browser from automatically opening.
+      open: true,
 
-// JavaScript processing
-gulp.task('js', () => {
-  return gulp.src(js.src)
-    .pipe(stripdebug())
-    .pipe(uglify())
-    .pipe(gulp.dest(js.build))
-    .pipe(browsersync ? browsersync.reload({ stream: true }) : gutil.noop());
-});
+      // Use a specific port (instead of the one auto-detected by Browsersync).
+      //port: 7000,
 
-// Copy the ico, screenshot, mandatory WP css theme file
-gulp.task('basic', () => {
-	return gulp.src(dir.src + '/*.+(png|jpg|css|ico)')
-	.pipe(newer(dir.build))
-	.pipe(gulp.dest(dir.build));
-});
+    } );
+  });
 
-// Languages settings
-const lang = {
-  src           : dir.src + '/languages/**/*.*',
-  build         : dir.build + '/languages'
-};
+  //Watch tasks
+  gulp.task('default', gulp.parallel('sass', 'js', 'images', 'fonts', 'files', function() {
+    gulp.watch( dir.src+'**/*.php', reload ); // Reload on PHP file changes.
+    gulp.watch( dir.src+'**/*.scss', [ 'sass' ] ); // Reload on SCSS file changes.
+    gulp.watch( dir.src+'**/*.js', [ 'js', reload ] ); // Reload on vendorsJs file changes.
+  }));
 
-// Languages
-gulp.task('languages', () => {
-  return gulp.src(lang.src)
-  .pipe(newer(lang.build))
-  .pipe(gulp.dest(lang.build));
-});
-
-// run all tasks
-gulp.task('build', ['php', 'css', 'js', 'basic', 'languages']);
-
-
-// Browsersync options
-const syncOpts = {
-  proxy       : 'frameworkwp.test',
-  files       : dir.build + '**/*',
-  open        : false,
-  notify      : false,
-  ghostMode   : false,
-  ui: {
-    port: 8001
-  }
-};
-
-// browser-sync
-gulp.task('browser_sync', () => {
-  if (browsersync === false) {
-    browsersync = require('browser-sync').create();
-    browsersync.init(syncOpts);
-  }
-});
-
-// watch for file changes
-gulp.task('watch', ['browser_sync'], () => {
-
-	// page changes
-  	gulp.watch(php.src, ['php'], browsersync ? browsersync.reload : {});
-
-	// image changes
-	gulp.watch(images.src, ['images']);
-
-	// CSS changes
-	gulp.watch(css.watch, ['css']);
-
-  // JavaScript main changes
-  gulp.watch(js.src, ['js']);
-  
-  // Language changes 
-  gulp.watch(lang.src, ['languages']);
-  
-  // Basic 
-	gulp.watch(dir.src, ['basic']);
-
-});
-
-// default task
-gulp.task('default', ['build', 'watch']);
+//Build task
+gulp.task('build', gulp.parallel('sass', 'js', 'images', 'fonts', 'files') );
