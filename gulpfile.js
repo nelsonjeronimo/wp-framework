@@ -1,4 +1,3 @@
-
 var gulp = require('gulp');
 var postcss = require('gulp-postcss');
 var sass = require('gulp-sass');
@@ -23,18 +22,14 @@ var projectURL  =   'project.test';
 
 // SASS to CSS, minified, cleaned, sourcemapped, autoprefixed
 
-var sass = {
-    opts: {
-        outputStyle     : 'nested',
-        imagePath       : images.build,
-        precision       : 3,
-        errLogToConsole : true
-    }
-}
 gulp.task('sass', function() {
 
    return gulp.src(dir.src+'assets/scss/**/*.scss')
-            .pipe(sass(sass.opts).on('error', sass.logError))
+            .pipe(sass({
+                outputStyle     : 'nested',
+                imagePath       : dir.dist+'assets/images',
+                precision       : 3
+            }).on('error', sass.logError))
             .pipe(sourcemaps.init())
             .pipe( autoprefixer())
             .pipe(cleanCSS({compatibility: 'ie9'}))
@@ -52,7 +47,7 @@ gulp.task('js', function() {
 // Compress Images
 gulp.task('images', function() {
     return gulp.src(dir.src+'assets/images/**/*.*')
-            .pipe(newer(dis.dist+'assets/images/**/*'))
+            .pipe(newer(dir.dist+'assets/images/**/*'))
             .pipe(imagemin())
             .pipe(gulp.dest(dir.dist+'assets/images'));
 });
@@ -94,11 +89,12 @@ gulp.task( 'browser-sync', function() {
   });
 
   //Watch tasks
-  gulp.task('default', gulp.parallel('sass', 'js', 'images', 'fonts', 'files', function() {
-    gulp.watch( dir.src+'**/*.php', reload ); // Reload on PHP file changes.
-    gulp.watch( dir.src+'**/*.scss', [ 'sass' ] ); // Reload on SCSS file changes.
-    gulp.watch( dir.src+'**/*.js', [ 'js', reload ] ); // Reload on vendorsJs file changes.
+  gulp.task('default', gulp.parallel('sass', 'js', 'images', 'fonts', 'files', 'browser-sync', function() {
+    gulp.watch( dir.src+'**/*.php', gulp.series('files', 'browser-sync')); // Reload on PHP file changes.
+    gulp.watch( dir.src+'**/*.scss', gulp.series( 'sass', 'browser-sync' ) ); // Reload on SCSS file changes.
+    gulp.watch( dir.src+'**/*.js', gulp.series( 'js', 'browser-sync' ) ); // Reload on vendorsJs file changes.
   }));
 
 //Build task
 gulp.task('build', gulp.parallel('sass', 'js', 'images', 'fonts', 'files') );
+
