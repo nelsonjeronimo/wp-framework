@@ -34,7 +34,8 @@ gulp.task('sass', function() {
             .pipe( autoprefixer())
             .pipe(cleanCSS({compatibility: 'ie9'}))
             .pipe(sourcemaps.write())
-            .pipe(gulp.dest(dir.dist+'assets/css'));
+            .pipe(gulp.dest(dir.dist+'assets/css'))
+            .pipe(browserSync.stream({match: '**/*.css'}));;
 });
 
 // JS minify
@@ -90,9 +91,9 @@ gulp.task( 'browser-sync', function() {
 
   //Watch tasks
   gulp.task('default', gulp.parallel('sass', 'js', 'images', 'fonts', 'files', 'browser-sync', function() {
-    gulp.watch( dir.src+'**/*.php', gulp.series('files', 'browser-sync')); // Reload on PHP file changes.
-    gulp.watch( dir.src+'**/*.scss', gulp.series( 'sass', 'browser-sync' ) ); // Reload on SCSS file changes.
-    gulp.watch( dir.src+'**/*.js', gulp.series( 'js', 'browser-sync' ) ); // Reload on vendorsJs file changes.
+    gulp.watch( dir.src+'**/*.php', gulp.series('files')).on('change', browserSync.reload); // Reload on PHP file changes.
+    gulp.watch( dir.src+'**/*.scss', gulp.series( 'sass')); // Reload on SCSS file changes.
+    gulp.watch( dir.src+'**/*.js', gulp.series( 'js' ) ).on('change', browserSync.reload); // Reload on vendorsJs file changes.
   }));
 
 //Build task
