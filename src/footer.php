@@ -10,7 +10,8 @@ d88P"                   888                         d88P"  Y8P 888
 888    "Y88P"   "Y88P"   "Y888 "Y8888  888          888    888 888  "Y8888 
 */
 ?>
-
+        </main>
+        
         <footer>
             <div class="widgtized_footer">
 

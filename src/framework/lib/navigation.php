@@ -4,7 +4,6 @@ add_action( 'init', 'register_frmw_menus' );
 add_action('nav_menu_css_class', 'add_current_nav_class', 10, 2);       // Add current-menu-item class to menu in CPT's single pages
 add_action('init', 'frmw_pagination');                                  // Add our Custom Pagination Navigation
 
-
 //
 // Register two basic menus, one main and other to use on the footer
 //

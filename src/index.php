@@ -11,19 +11,40 @@
  */
 get_header(); ?>
 
-<h3>This is the core page (index.php):</h3>
+<main>
 
-<?php the_socials('xpto'); ?>
+<?php 
 
-<?php while(have_posts()) : the_post(); ?>
+	if ( have_posts() ) :
 
-	title: <?php the_title(); ?><br />
-	ID: <?php the_ID(); ?><br />
-	time: <?php the_time(get_option('date_format')); ?><br />
-	excerpt: <?php the_excerpt(); ?><br />
-	link: <a href="<?php the_permalink(); ?>">link</a><br />
-	<hr />
+		if ( is_home() && ! is_front_page() ) :
+			?>
+			<header>
+				<h1><?php single_post_title(); ?></h1>
+			</header>
+			<?php
+		endif;
 
-<?php endwhile; ?>
+		while(have_posts()) : the_post(); ?>
+
+		title: <?php the_title(); ?><br />
+		ID: <?php the_ID(); ?><br />
+		time: <?php the_time(get_option('date_format')); ?><br />
+		excerpt: <?php the_excerpt(); ?><br />
+		link: <a href="<?php the_permalink(); ?>">link</a><br />
+		<hr />
+
+<?php endwhile; 
+
+	frmw_pagination();
+
+	else :
+
+		get_template_part( 'template-parts/content', 'none' );
+
+	endif;
+
+?>
+
 
 <?php get_footer(); ?>

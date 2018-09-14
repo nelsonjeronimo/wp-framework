@@ -22,5 +22,4 @@ function frmw_footer() {
     }
 }
 
-
 add_action('wp_footer', 'frmw_footer');

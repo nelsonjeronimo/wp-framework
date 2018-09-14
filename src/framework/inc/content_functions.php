@@ -42,9 +42,11 @@ function the_brand() {
     return $output;
 }
 
-
 // MAIN NAVIGATION
-function main_navigation($nav_ID="main_nav", $classes="") {
+
+require_once get_template_directory()."/framework/lib/bs4navwalker.php"; // Bootstrap 4 navigation + wordpress menus
+
+function main_navigation($nav_ID="main_nav", $classes="", $location="header-menu") {
     ?>
     <nav class="navbar navbar-expand-md <?php echo $classes ?>">
         <a class="navbar-brand" href="#"><?php echo the_brand(); ?></a>
@@ -53,8 +55,8 @@ function main_navigation($nav_ID="main_nav", $classes="") {
         </button>
     <?php
         wp_nav_menu([
-            'menu'            => 'top',
-            'theme_location'  => 'top',
+            'menu'            => $location,
+            'theme_location'  => $location,
             'container'       => 'div',
             'container_id'    => $nav_ID,
             'container_class' => 'collapse navbar-collapse',
@@ -75,8 +77,9 @@ function main_navigation($nav_ID="main_nav", $classes="") {
 function the_socials($classes='') {
 
     $mods_array = get_theme_mods();
-
     $mods_social = array();
+    $networks = [];
+    
 
     foreach( $mods_array as $key => $value ) {
         $exp_key = explode('_', $key );

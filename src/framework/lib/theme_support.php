@@ -16,6 +16,14 @@ function theme_support_features() {
 	// HTML5
 	add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
 
+	// Automatic Feed links
+	global $wp_version;
+	if ( version_compare( $wp_version, '3.0', '>=' ) ) :
+		add_theme_support( 'automatic-feed-links' ); 
+	else :
+		automatic_feed_links();
+	endif;
+
 }
 add_action( 'after_setup_theme', 'theme_support_features' );
 
