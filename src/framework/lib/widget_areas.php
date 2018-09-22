@@ -13,9 +13,9 @@ function frmw_footer_widgets() {
             register_sidebar(array(
                 'name' => 'Footer Area ' . (string) $i,
                 'id' => 'frmw_footer_area_' . (string) $i,
-                'before_widget' => '<div>',
+                'before_widget' => '<div id="%1$s" class="widget %2$s">',
                 'after_widget' => '</div>',
-                'before_title' => '<h4>',
+                'before_title' => '<h4 class="widget-title">',
                 'after_title' => '</h4>'
             ));
 

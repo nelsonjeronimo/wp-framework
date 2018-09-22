@@ -27,7 +27,7 @@ function frmw_customizer_section($wp_customize) {
 
     $wp_customize->add_control('phone_details', array(
         'label' => __('Phone number', 'fmrw'),
-        'type' => 'text',
+        'type' => 'email',
         'section' => 'contacts_section',
         'settings' => 'phone_details'
     ));
@@ -210,6 +210,6 @@ function frmw_sanitize_email($mail) {
 
 //sanitize numbers
 function frmw_sanitize_number($number) {
-    $number = filter_var($number, FILTER_SANITIZE_NUMBER_INT);
+    //$number = filter_var($number, FILTER_SANITIZE_NUMBER_INT);
     return $number;
 }

@@ -5,12 +5,10 @@ function frmw_footer() {
 
     if ($footer_areas !== 0) {
         $footer_width = get_theme_mod('footer_width');
-        if ($footer_width) {
-            $footer_width = 'full';
-        }
         $area_width = 12 / $footer_areas;
 
-        echo '<div class="' . $footer_width . '"';
+
+        echo '<div class="' . $footer_width . '">';
         echo '<div class="row">';
 
         for ($i = 1; $i <= $footer_areas; $i++) {
@@ -21,5 +19,3 @@ function frmw_footer() {
         echo '</div></div>';
     }
 }
-
-add_action('wp_footer', 'frmw_footer');

@@ -35,7 +35,7 @@ gulp.task('sass', function() {
             .pipe(cleanCSS({compatibility: 'ie9'}))
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(dir.dist+'assets/css'))
-            .pipe(browserSync.stream({match: '**/*.css'}));;
+            .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 // JS minify
@@ -71,7 +71,10 @@ gulp.task('files', function() {
     var phpfiles = gulp.src(dir.src+'**/*.php')
                     .pipe(gulp.dest(dir.dist));
 
-    return merge(themeroot, themelang, phpfiles);
+    var framework = gulp.src(dir.src+'framework/**/*.*')
+                    .pipe(gulp.dest(dir.dist+'framework/'));
+
+    return merge(themeroot, themelang, phpfiles, framework);
 });
 
 // Browsersync
@@ -94,8 +97,8 @@ gulp.task( 'browser-sync', function() {
     gulp.watch( dir.src+'**/*.php', gulp.series('files')).on('change', browserSync.reload); // Reload on PHP file changes.
     gulp.watch( dir.src+'**/*.scss', gulp.series( 'sass')); // Reload on SCSS file changes.
     gulp.watch( dir.src+'**/*.js', gulp.series( 'js' ) ).on('change', browserSync.reload); // Reload on vendorsJs file changes.
+    gulp.watch( dir.src+'/framework/**/*.*', gulp.series('files')).on('change', browserSync.reload);
   }));
 
 //Build task
 gulp.task('build', gulp.parallel('sass', 'js', 'images', 'fonts', 'files') );
-
